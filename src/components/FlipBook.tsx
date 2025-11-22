@@ -127,56 +127,52 @@ export const FlipBook = ({ onClose }: FlipBookProps) => {
       <div className="relative w-full max-w-7xl">
         {/* Book container with 3D perspective */}
         <div className="relative" style={{ perspective: "2500px" }}>
-          <div className="grid md:grid-cols-2 gap-0 md:gap-1 book-shadow rounded-lg overflow-visible relative">
+          <div className="grid md:grid-cols-2 gap-0 md:gap-8 book-shadow rounded-lg overflow-hidden">
             {/* Left page - Student profile */}
-            <div className="relative bg-book-page" style={{ transformStyle: "preserve-3d" }}>
-              <AnimatePresence mode="wait" custom={direction}>
-                <motion.div
-                  key={`student-${currentPage}`}
-                  custom={direction}
-                  variants={pageVariants}
-                  initial="enter"
-                  animate="center"
-                  exit="exit"
-                  transition={{
-                    duration: 0.8,
-                    ease: [0.43, 0.13, 0.23, 0.96],
-                  }}
-                  className="bg-book-page paper-texture absolute inset-0 overflow-hidden rounded-l-lg"
-                  style={{ 
-                    transformStyle: "preserve-3d",
-                    backfaceVisibility: "hidden",
-                  }}
-                >
-                  <StudentPage student={students[currentPage]} />
-                </motion.div>
-              </AnimatePresence>
-            </div>
+            <AnimatePresence mode="wait" custom={direction}>
+              <motion.div
+                key={`student-${currentPage}`}
+                custom={direction}
+                variants={pageVariants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                transition={{
+                  duration: 0.8,
+                  ease: [0.43, 0.13, 0.23, 0.96],
+                }}
+                className="bg-book-page paper-texture"
+                style={{ 
+                  transformStyle: "preserve-3d",
+                  backfaceVisibility: "hidden",
+                }}
+              >
+                <StudentPage student={students[currentPage]} />
+              </motion.div>
+            </AnimatePresence>
 
             {/* Right page - Teacher comments */}
-            <div className="relative bg-book-page" style={{ transformStyle: "preserve-3d" }}>
-              <AnimatePresence mode="wait" custom={direction}>
-                <motion.div
-                  key={`teacher-${currentPage}`}
-                  custom={direction}
-                  variants={pageVariants}
-                  initial="enter"
-                  animate="center"
-                  exit="exit"
-                  transition={{
-                    duration: 0.8,
-                    ease: [0.43, 0.13, 0.23, 0.96],
-                  }}
-                  className="bg-book-page paper-texture absolute inset-0 overflow-hidden rounded-r-lg"
-                  style={{ 
-                    transformStyle: "preserve-3d",
-                    backfaceVisibility: "hidden",
-                  }}
-                >
-                  <TeacherPage teachers={students[currentPage].teachers} />
-                </motion.div>
-              </AnimatePresence>
-            </div>
+            <AnimatePresence mode="wait" custom={direction}>
+              <motion.div
+                key={`teacher-${currentPage}`}
+                custom={direction}
+                variants={pageVariants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                transition={{
+                  duration: 0.8,
+                  ease: [0.43, 0.13, 0.23, 0.96],
+                }}
+                className="bg-book-page paper-texture"
+                style={{ 
+                  transformStyle: "preserve-3d",
+                  backfaceVisibility: "hidden",
+                }}
+              >
+                <TeacherPage teachers={students[currentPage].teachers} />
+              </motion.div>
+            </AnimatePresence>
           </div>
         </div>
 
