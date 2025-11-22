@@ -1,13 +1,26 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { useState } from "react";
+import { BookCover } from "@/components/BookCover";
+import { FlipBook } from "@/components/FlipBook";
 
 const Index = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
+    <>
+      {/* Google Fonts - Dancing Script and Kalam for handwritten effects */}
+      <link
+        href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&family=Kalam:wght@300;400;700&display=swap"
+        rel="stylesheet"
+      />
+      
+      <div className="min-h-screen">
+        {!isOpen ? (
+          <BookCover onOpen={() => setIsOpen(true)} />
+        ) : (
+          <FlipBook onClose={() => setIsOpen(false)} />
+        )}
       </div>
-    </div>
+    </>
   );
 };
 
