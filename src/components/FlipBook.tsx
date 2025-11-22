@@ -97,66 +97,86 @@ export const FlipBook = ({ onClose }: FlipBookProps) => {
     }
   };
 
-  const variants = {
+  // Realistic page flip animation - pages flip from right to left
+  const pageVariants = {
     enter: (direction: number) => ({
-      rotateY: direction > 0 ? 180 : -180,
+      x: direction > 0 ? "100%" : "-100%",
+      rotateY: direction > 0 ? -180 : 180,
+      transformOrigin: direction > 0 ? "left" : "right",
       opacity: 0,
+      zIndex: 0,
     }),
     center: {
+      x: 0,
       rotateY: 0,
+      transformOrigin: "center",
       opacity: 1,
+      zIndex: 10,
     },
     exit: (direction: number) => ({
-      rotateY: direction > 0 ? -180 : 180,
-      opacity: 0,
+      x: direction > 0 ? "-100%" : "100%",
+      rotateY: direction > 0 ? 180 : -180,
+      transformOrigin: direction > 0 ? "right" : "left",
+      opacity: 0.5,
+      zIndex: 5,
     }),
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4 md:p-8 bg-gradient-to-br from-background via-secondary to-background">
       <div className="relative w-full max-w-7xl">
-        {/* Book container */}
-        <div className="relative perspective-2000">
-          <div className="grid md:grid-cols-2 gap-0 md:gap-8 book-shadow rounded-lg overflow-hidden">
+        {/* Book container with 3D perspective */}
+        <div className="relative" style={{ perspective: "2500px" }}>
+          <div className="grid md:grid-cols-2 gap-0 md:gap-1 book-shadow rounded-lg overflow-visible relative">
             {/* Left page - Student profile */}
-            <AnimatePresence mode="wait" custom={direction}>
-              <motion.div
-                key={`student-${currentPage}`}
-                custom={direction}
-                variants={variants}
-                initial="enter"
-                animate="center"
-                exit="exit"
-                transition={{
-                  rotateY: { duration: 0.8, ease: "easeInOut" },
-                  opacity: { duration: 0.4 },
-                }}
-                className="bg-book-page paper-texture relative"
-                style={{ transformStyle: "preserve-3d" }}
-              >
-                <StudentPage student={students[currentPage]} />
-              </motion.div>
-            </AnimatePresence>
+            <div className="relative bg-book-page" style={{ transformStyle: "preserve-3d" }}>
+              <AnimatePresence mode="wait" custom={direction}>
+                <motion.div
+                  key={`student-${currentPage}`}
+                  custom={direction}
+                  variants={pageVariants}
+                  initial="enter"
+                  animate="center"
+                  exit="exit"
+                  transition={{
+                    duration: 0.8,
+                    ease: [0.43, 0.13, 0.23, 0.96],
+                  }}
+                  className="bg-book-page paper-texture absolute inset-0 overflow-hidden rounded-l-lg"
+                  style={{ 
+                    transformStyle: "preserve-3d",
+                    backfaceVisibility: "hidden",
+                  }}
+                >
+                  <StudentPage student={students[currentPage]} />
+                </motion.div>
+              </AnimatePresence>
+            </div>
 
             {/* Right page - Teacher comments */}
-            <AnimatePresence mode="wait" custom={direction}>
-              <motion.div
-                key={`teacher-${currentPage}`}
-                custom={direction}
-                variants={variants}
-                initial="enter"
-                animate="center"
-                exit="exit"
-                transition={{
-                  rotateY: { duration: 0.8, ease: "easeInOut" },
-                  opacity: { duration: 0.4 },
-                }}
-                className="bg-book-page paper-texture relative"
-                style={{ transformStyle: "preserve-3d" }}
-              >
-                <TeacherPage teachers={students[currentPage].teachers} />
-              </motion.div>
-            </AnimatePresence>
+            <div className="relative bg-book-page" style={{ transformStyle: "preserve-3d" }}>
+              <AnimatePresence mode="wait" custom={direction}>
+                <motion.div
+                  key={`teacher-${currentPage}`}
+                  custom={direction}
+                  variants={pageVariants}
+                  initial="enter"
+                  animate="center"
+                  exit="exit"
+                  transition={{
+                    duration: 0.8,
+                    ease: [0.43, 0.13, 0.23, 0.96],
+                  }}
+                  className="bg-book-page paper-texture absolute inset-0 overflow-hidden rounded-r-lg"
+                  style={{ 
+                    transformStyle: "preserve-3d",
+                    backfaceVisibility: "hidden",
+                  }}
+                >
+                  <TeacherPage teachers={students[currentPage].teachers} />
+                </motion.div>
+              </AnimatePresence>
+            </div>
           </div>
         </div>
 
